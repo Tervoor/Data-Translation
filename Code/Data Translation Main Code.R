@@ -89,3 +89,19 @@ plot(reg_model_1, which = 2) #Normal qqplot
 ggplot()+geom_histogram(aes(resid(reg_model_1))) #Histogram of residuals 
 ggplot(final_data, aes(agricultural_profit))+geom_histogram() #Histogram of outcome variable
 plot(reg_model_1, which = 3) #Constant variance plot (scale-location)
+
+#Fitting the second regression model, profit per acre as a function of education_years,
+#household_size, road_access, extension_visit
+reg_model_2 <- lm(profit_per_acre~education_years+household_size+road_access+extension_visit,
+                  data = final_data)
+
+#Printing summary table
+summary(reg_model_2)
+kable(tidy(summary(reg_model_2)), digits = 3)
+
+#Creating diagnostic plots
+plot(reg_model_2, which = 1) #Residuals vs. fitted
+plot(reg_model_2, which = 2) #Normal qqplot
+ggplot()+geom_histogram(aes(resid(reg_model_2))) #Histogram of residuals
+ggplot(final_data, aes(profit_per_acre))+geom_histogram() #Histogram of outcome variable
+plot(reg_model_2, which = 3) #Constant variance plot (scale-location)
