@@ -105,3 +105,22 @@ plot(reg_model_2, which = 2) #Normal qqplot
 ggplot()+geom_histogram(aes(resid(reg_model_2))) #Histogram of residuals
 ggplot(final_data, aes(profit_per_acre))+geom_histogram() #Histogram of outcome variable
 plot(reg_model_2, which = 3) #Constant variance plot (scale-location)
+
+#Applying the yeojohnson transformation to normalize the agricultural profit varaible
+final_data <- mutate(final_data, transform_profit = yeojohnson(agricultural_profit)$x.t)
+
+#Fitting the third regression model, transform agricultural profit as a function of education_years,
+#household_size, road_access, extension_visit
+reg_model_3 <- lm(transform_profit~education_years+household_size+road_access+extension_visit,
+                  data = final_data)
+
+#Printing summary table
+summary(reg_model_3)
+kable(tidy(summary(reg_model_3)), digits = 3)
+
+#Creating diagnostic plots
+plot(reg_model_3, which = 1) #Residuals vs. fitted
+plot(reg_model_3, which = 2) #Normal qqplot
+ggplot()+geom_histogram(aes(resid(reg_model_3))) #Histogram of residuals
+ggplot(final_data, aes(transform_profit))+geom_histogram() #Histogram of outcome variable
+plot(reg_model_3, which = 3) #Constant variance plot (scale-location)
